@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO CHANGE 1: Updated Title to include keywords -->
+    <title>Shinyu Reverie | Instrumental Music Composer & Soundtracks</title>
+    
+    <!-- SEO CHANGE 2: Updated Description to describe your music, not the design -->
+    <meta name="description" content="Official website of Shinyu Reverie. Creating original instrumental music, ambient soundscapes, and cinematic soundtracks.">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* 
+         * DESIGN SYSTEM: FRESH MODERN / LIVE GRADIENT
+         * Vibrant, Moving, Glassy.
+         */
+        :root {
+            --text-main: #ffffff;
+            --text-light: #e0e0e0;
+            --accent: #00ffff; /* Cyan Neon */
+            --accent-hover: #ffffff;
+            --white-glass: rgba(255, 255, 255, 0.15);
+            --shadow-soft: 0 20px 40px -10px rgba(0,0,0,0.3);
+            --shadow-hover: 0 30px 60px -12px rgba(0, 255, 255, 0.25);
+            --border-glass: rgba(255, 255, 255, 0.2);
+            --panel-width: 100vw; 
+            --nav-height: 80px;
+        }
+
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden; 
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- LIVE WALLPAPER --- */
+        .live-wallpaper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: linear-gradient(300deg, #0f172a, #1e40af, #06b6d4, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientLive 15s ease infinite;
+        }
+
+        @keyframes gradientLive {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- SNOW OVERLAY --- */
+        #snowCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* CUSTOM CURSOR */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        body:active .cursor {
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* HORIZONTAL SCROLL CONTAINER */
+        .scroller {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .scroller::-webkit-scrollbar { display: none; }
+        .scroller { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* SECTIONS (PANELS) */
+        .panel {
+            min-width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 10%;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* NAVIGATION (Dark Glass) */
+        nav {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 1; 
+            transition: opacity 0.3s ease;
+        }
+
+        /* TYPOGRAPHY & LAYOUT UTILS */
+        h1 {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        p {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            max-width: 500px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2.5rem;
+            background: #fff;
+            color: #000;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--accent);
+        }
+
+        /* SPECIFIC PANEL STYLES */
+
+        /* PANEL 1: HERO */
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            max-width: 1600px;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        /* 3D TILT CONTAINER (HERO) */
+        .hero-image-wrapper {
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: transform 0.1s ease-out;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            filter: grayscale(20%);
+            transition: filter 0.5s;
+            pointer-events: none; 
+        }
+        
+        .hero-image-wrapper:hover .hero-img {
+            filter: brightness(1.1);
+        }
+
+        .floating-badge {
+            position: absolute;
+            bottom: 40px;
+            left: -20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateZ(30px);
+            /* Ensure badge stays visible on top of transforms */
+            z-index: 10;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff9d;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff9d;
+        }
+
+        /* PANEL 2: PROFILE */
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            width: 100%;
+            max-width: 1400px;
+            gap: 6rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            border: 1px solid var(--border-glass);
+            padding: 2rem;
+            border-radius: 16px;
+            background: var(--white-glass);
+            backdrop-filter: blur(20px);
+        }
+
+        .stat-num {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* 3D TILT CONTAINER (PROFILE) */
+        .profile-img-tilt {
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: transform 0.1s ease-out;
+            width: 80%;
+            margin: 3rem auto 0 auto;
+        }
+        
+        .profile-img-tilt img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            pointer-events: none;
+        }
+
+        /* PANEL 3: WORK */
+        .work-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            max-width: 1800px;
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .project-link { 
+            text-decoration: none; 
+            display: block; 
+            cursor: pointer;
+        }
+
+        /* 3D TILT CONTAINER (CARDS) */
+        .project-card {
+            background: var(--white-glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.1s ease-out, box-shadow 0.3s;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .project-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
+        }
+
+        .video-thumb-wrapper {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            transform: translateZ(20px);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .play-overlay { opacity: 1; }
+
+        .play-icon {
+            width: 50px; height: 50px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        
+        .project-card:hover .play-icon { transform: scale(1.1); }
+
+        .card-info {
+            padding: 1.5rem;
+            transform: translateZ(30px);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .card-tags {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* PANEL 4: LINKS */
+        .links-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .link-card {
+            width: 100%;
+            background: var(--white-glass);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .link-card:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: var(--accent);
+            transform: translateX(10px);
+        }
+
+        .link-icon {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            transition: color 0.3s;
+        }
+
+        .link-card:hover .link-icon {
+            color: #fff;
+        }
+
+        /* ANIMATION UTILS */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- NEW: CHOICE MODAL --- */
+        #choice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #choice-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-card {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-glass);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        }
+
+        #choice-modal.active .modal-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-title {
+            color: #fff;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .modal-subtitle {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #fff;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- FLOATING AUDIO PLAYER --- */
+        #audio-player {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%); /* Hidden initially */
+            width: 90%;
+            max-width: 600px;
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            z-index: 1000;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #audio-player.active {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .track-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .track-art {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: #333;
+            object-fit: cover;
+        }
+
+        .track-text {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .track-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-status {
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            color: var(--accent);
+        }
+
+        .play-btn {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            color: #000;
+        }
+
+        .play-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        /* Hidden YouTube Iframe */
+        #youtube-frame-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 900px) {
+            html, body { overflow: auto; }
+            .scroller { display: block; overflow: visible; height: auto; }
+            .panel { min-width: 100%; height: auto; min-height: 100vh; flex-direction: column; padding: 100px 5%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            nav { width: 90%; justify-content: space-around; gap: 0; top: 20px; padding: 1rem; }
+            h1 { font-size: 3.5rem; }
+            .hero-layout, .profile-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .work-grid { grid-template-columns: 1fr; }
+            .floating-badge { display: none; }
+            
+            #audio-player {
+                bottom: 10px;
+                width: 95%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .player-controls { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LIVE WALLPAPER -->
+    <div class="live-wallpaper"></div>
+    
+    <!-- SNOW CANVAS OVERLAY -->
+    <canvas id="snowCanvas"></canvas>
+    
+    <!-- CURSOR -->
+    <div class="cursor"></div>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#cover" class="nav-link active">Cover</a>
+        <a href="#about" class="nav-link">Profile</a>
+        <a href="#work" class="nav-link">Work</a>
+        <a href="#links" class="nav-link">Links</a>
+    </nav>
+
+    <main class="scroller">
+        
+        <!-- SECTION 1: COVER -->
+        <section class="panel" id="cover">
+            <div class="hero-layout">
+                <div class="hero-text fade-up">
+                    <p style="color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">HELLO, I'M SHINYU</p>
+                    <h1>Instrumental<br> Music.</h1>
+                    <p>Creating instrumental music in various categories.</p>
+                    <a href="#work" class="btn">View Projects</a>
+                </div>
+                <div class="hero-image-wrapper fade-up tilt-target">
+                    <img src="https://i.postimg.cc/FKMgQfZ2/IMG-1808.jpg" alt="Portrait" class="hero-img">
+                    
+                    <div class="floating-badge">
+                        <div class="dot"></div>
+                        <span>Available for work</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PROFILE -->
+        <section class="panel" id="about">
+            <div class="profile-layout">
+                <div class="bio fade-up">
+                    
+                    <!-- SEO CHANGE 3: Updated H2 to "About the Composer" -->
+                    <h2>About the Composer</h2>
+                    
+                    <!-- SEO CHANGE 4: Updated Bio to include "Instrumental Music Composer" -->
+                    <p>
+                        I am Shinyu Reverie, an <strong>instrumental music composer</strong> dedicated to crafting original ambient and cinematic soundtracks. To me, music is more than just sound; it is a landscape.
+                    </p>
+                    <br>
+                    <p>
+                        Merging the worlds of artistry and audio production, I craft a harmony between beauty and balance. My sound is "Soft Types"—using tone, dynamics, and rhythm to build experiences that transport the listener.
+                    </p>
+                    <br>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-num">1</span>
+                            <span class="stat-label">Month Exp.</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">4</span>
+                            <span class="stat-label">Projects</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills fade-up">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Music Type</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <span class="stat-item" style="padding: 0.5rem 1rem; border-radius: 50px; display: inline-block;">Ambient</span>
+                        <span class="stat-item" style="padding: 0.5rem 1rem; border-radius: 50px; display: inline-block;">Relaxing</span>
+                        <span class="stat-item" style="padding: 0.5rem 1rem; border-radius: 50px; display: inline-block;">Sleep</span>
+                        <span class="stat-item" style="padding: 0.5rem 1rem; border-radius: 50px; display: inline-block;">Chilling</span>
+                        <span class="stat-item" style="padding: 0.5rem 1rem; border-radius: 50px; display: inline-block;">Soothing</span>
+                    </div>
+                    
+                    <div class="profile-img-tilt fade-up tilt-target">
+                        <img src="https://i.postimg.cc/LsbS1tC8/copy-71D74F8F-EFAB-4204-AC06-C7C9B87BF83C.jpg" alt="Workspace">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: WORK -->
+        <section class="panel" id="work">
+            <div class="work-container">
+                <div style="margin-bottom: 3rem;" class="fade-up">
+                    <h2>Recent Uploads</h2>
+                    <p>Click a track to listen.</p>
+                </div>
+
+                <div class="work-grid">
+                    
+                    <!-- UPLOAD 1 -->
+                    <div class="project-link fade-up tilt-target" data-url="https://youtu.be/EjMZVmQW0LM?si=J4iLjDc84It1DCjY" data-title="The Wind Carries Gentle Memories">
+                        <article class="project-card">
+                            <div class="video-thumb-wrapper">
+                                <img src="https://picsum.photos/seed/placeholder1/400/300" class="card-img" alt="Video Thumbnail">
+                                <div class="play-overlay">
+                                    <div class="play-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">The Wind Carries Gentle Memories</h3>
+                                <div class="card-tags">YouTube • Listen Now</div>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <!-- UPLOAD 2 -->
+                    <div class="project-link fade-up tilt-target" data-url="https://youtu.be/bq6P328Vreo?si=S6cdfdNlFHm9StbN" data-title="Beneath The Frozen Starlight">
+                        <article class="project-card">
+                            <div class="video-thumb-wrapper">
+                                <img src="https://picsum.photos/seed/placeholder2/400/300" class="card-img" alt="Video Thumbnail">
+                                <div class="play-overlay">
+                                    <div class="play-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">Beneath The Frozen Starlight</h3>
+                                <div class="card-tags">YouTube • Listen Now</div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- UPLOAD 3 -->
+                    <div class="project-link fade-up tilt-target" data-url="https://youtu.be/aNrwOjMWG7k?si=rEDeyqA3JrQfoUDI" data-title="The Enchanted Garden Of Slumber">
+                        <article class="project-card">
+                            <div class="video-thumb-wrapper">
+                                <img src="https://picsum.photos/seed/placeholder3/400/300" class="card-img" alt="Video Thumbnail">
+                                <div class="play-overlay">
+                                    <div class="play-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">The Enchanted Garden Of Slumber</h3>
+                                <div class="card-tags">YouTube • Listen Now</div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: LINKS -->
+        <section class="panel" id="links">
+            <div class="links-layout fade-up">
+                <h2>Let's Connect</h2>
+                <p style="margin: 0 auto 3rem auto;">Find me on social media or send an email.</p>
+
+                <!-- Cleaned up Instagram Link with target="_blank" -->
+                <a href="https://www.instagram.com/shinyureverie?igsh=Ynl6dzYzNzJ4bnIz&utm_source=qr" target="_blank" class="link-card">
+                    <span>Instagram</span>
+                    <span class="link-icon">→</span>
+                </a>
+                <a href="https://www.youtube.com/@shinyureverie/featured" target="_blank" class="link-card">
+                    <span>Youtube</span>
+                    <span class="link-icon">→</span>
+                </a>
+
+                <a href="mailto:shinyureverie@gmail.com" class="btn" style="background: var(--accent); color: #000; margin-top: 2rem;">Email Me</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- BEAUTIFUL GLASS CHOICE MODAL -->
+    <div id="choice-modal">
+        <div class="modal-card">
+            <h3 class="modal-title" id="modal-track-name">Track Name</h3>
+            <p class="modal-subtitle">How would you like to listen?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-primary" id="modal-play-btn">Listen Now</button>
+                <button class="modal-btn btn-secondary" id="modal-yt-btn">Watch on YouTube</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING AUDIO PLAYER UI -->
+    <div id="audio-player">
+        <div class="track-info">
+            <img src="" alt="Album Art" id="player-art" class="track-art">
+            <div class="track-text">
+                <span id="player-title" class="track-title">Select a track...</span>
+                <span id="player-status" class="track-status">Paused</span>
+            </div>
+        </div>
+        <div class="player-controls">
+            <!-- External Link Button -->
+            <a href="#" target="_blank" id="external-link-btn" class="control-btn" title="Watch on YouTube">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            </a>
+            <!-- Play/Pause Button -->
+            <button id="play-pause-btn" class="control-btn play-btn">
+                <!-- Play Icon -->
+                <svg class="icon-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <!-- Pause Icon (Hidden by default) -->
+                <svg class="icon-pause" style="display:none;" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- HIDDEN YOUTUBE API CONTAINER -->
+    <div id="youtube-frame-container">
+        <div id="player"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. SMART THUMBNAIL SCRIPT ---
+            function updateThumbnails() {
+                const links = document.querySelectorAll('.project-link');
+                links.forEach(link => {
+                    const url = link.getAttribute('data-url');
+                    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|shorts\/)|youtu\.be\/|youtube\.com\/api\/player\?(?:\?|&)vi?=)([^&?\/\n?#]+)/;
+                    const match = url.match(regex);
+
+                    if (match && match[1]) {
+                        const videoId = match[1];
+                        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                        const img = link.querySelector('img');
+                        if (img) img.src = thumbnailUrl;
+                    }
+                });
+            }
+            updateThumbnails();
+
+
+            // --- 2. SNOW ANIMATION ---
+            const canvas = document.getElementById('snowCanvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+            window.addEventListener('resize', () => { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; });
+
+            class Snowflake {
+                constructor() { this.init(); }
+                init() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.size = Math.random() * 2 + 1;
+                    this.speedY = Math.random() * 0.5 + 0.2;
+                    this.speedX = Math.random() * 0.3 - 0.15;
+                    this.opacity = Math.random() * 0.5 + 0.3;
+                }
+                update() {
+                    this.y += this.speedY; this.x += this.speedX;
+                    if (this.y > height) { this.y = -5; this.x = Math.random() * width; }
+                }
+                draw() {
+                    ctx.fillStyle = `rgba(255,255,255, ${this.opacity})`;
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            const snowflakes = [];
+            for (let i = 0; i < 100; i++) snowflakes.push(new Snowflake());
+            function animateSnow() {
+                ctx.clearRect(0, 0, width, height);
+                snowflakes.forEach(flake => { flake.update(); flake.draw(); });
+                requestAnimationFrame(animateSnow);
+            }
+            animateSnow();
+
+
+            // --- 3. CUSTOM CURSOR ---
+            const cursor = document.querySelector('.cursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+
+            // --- 4. 3D TILT EFFECT LOGIC ---
+            const tiltTargets = document.querySelectorAll('.tilt-target');
+            
+            tiltTargets.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; 
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('touchmove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    const x = touch.clientX - rect.left;
+                    const y = touch.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; 
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                });
+
+                card.addEventListener('touchend', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                });
+            });
+
+
+            // --- 5. MODAL & PLAYER LOGIC ---
+            var player;
+            let isPlaying = false;
+            let isPlayerReady = false;
+
+            let pendingVideoData = {
+                id: null,
+                url: null,
+                title: null,
+                img: null
+            };
+
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            window.onYouTubeIframeAPIReady = function() {
+                player = new YT.Player('player', {
+                    height: '200',
+                    width: '200',
+                    videoId: '', 
+                    playerVars: {
+                        'playsinline': 1,
+                        'controls': 0,
+                        'disablekb': 1,
+                        'origin': window.location.origin || 'https://www.youtube.com'
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange,
+                        'onError': onPlayerError
+                    }
+                });
+            };
+
+            function onPlayerReady(event) {
+                isPlayerReady = true;
+            }
+
+            function onPlayerError(event) {
+                console.error("YouTube Player Error:", event.data);
+                const statusText = document.getElementById('player-status');
+                statusText.innerText = "Error loading video";
+                statusText.style.color = "red";
+            }
+
+            function onPlayerStateChange(event) {
+                const btnPlay = document.querySelector('.icon-play');
+                const btnPause = document.querySelector('.icon-pause');
+                const statusText = document.getElementById('player-status');
+
+                if (event.data == YT.PlayerState.PLAYING) {
+                    isPlaying = true;
+                    btnPlay.style.display = 'none';
+                    btnPause.style.display = 'block';
+                    statusText.innerText = "Playing...";
+                } else {
+                    isPlaying = false;
+                    btnPlay.style.display = 'block';
+                    btnPause.style.display = 'none';
+                    statusText.innerText = "Paused";
+                }
+            }
+
+            const projectLinks = document.querySelectorAll('.project-link');
+            const playerUI = document.getElementById('audio-player');
+            const playerTitle = document.getElementById('player-title');
+            const playerArt = document.getElementById('player-art');
+            const externalLinkBtn = document.getElementById('external-link-btn');
+
+            const modal = document.getElementById('choice-modal');
+            const modalTrackName = document.getElementById('modal-track-name');
+            const modalPlayBtn = document.getElementById('modal-play-btn');
+            const modalYtBtn = document.getElementById('modal-yt-btn');
+
+            projectLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const url = link.getAttribute('data-url');
+                    const title = link.getAttribute('data-title');
+                    const img = link.querySelector('img').src;
+
+                    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|shorts\/)|youtu\.be\/|youtube\.com\/api\/player\?(?:\?|&)vi?=)([^&?\/\n?#]+)/;
+                    const match = url.match(regex);
+
+                    if (match && match[1]) {
+                        pendingVideoData = {
+                            id: match[1],
+                            url: url,
+                            title: title,
+                            img: img
+                        };
+
+                        modalTrackName.innerText = title;
+                        modal.classList.add('active');
+                    }
+                });
+            });
+
+            modalPlayBtn.addEventListener('click', () => {
+                modal.classList.remove('active'); 
+                
+                if (!isPlayerReady || !player || typeof player.loadVideoById !== 'function') {
+                    alert("Player not ready yet. Please wait a moment.");
+                    return;
+                }
+
+                playerTitle.innerText = pendingVideoData.title;
+                playerArt.src = pendingVideoData.img;
+                externalLinkBtn.href = pendingVideoData.url;
+                playerUI.classList.add('active'); 
+
+                player.loadVideoById(pendingVideoData.id);
+            });
+
+            modalYtBtn.addEventListener('click', () => {
+                modal.classList.remove('active'); 
+                window.open(pendingVideoData.url, '_blank'); 
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            document.getElementById('play-pause-btn').addEventListener('click', () => {
+                if (!player) return;
+                if (isPlaying) {
+                    player.pauseVideo();
+                } else {
+                    player.playVideo();
+                }
+            });
+
+
+            // --- 6. FADE-UP ANIMATION ---
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
+
+
+            // --- 7. NUCLEAR FIX: SAFETY TIMER FOR NAVIGATION ---
+            const sections = document.querySelectorAll('.panel');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const scroller = document.querySelector('.scroller');
+            
+            function updateActiveLink(id) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // THE CORE FUNCTION THAT DETECTS SECTION
+            function updateNavState() {
+                const width = window.innerWidth;
+                
+                if (width > 900) {
+                    // DESKTOP: Horizontal Logic
+                    const scrollLeft = scroller.scrollLeft;
+                    const index = Math.round(scrollLeft / width);
+                    if (sections[index]) {
+                        const id = sections[index].getAttribute('id');
+                        updateActiveLink(id);
+                    }
+                } else {
+                    // MOBILE: Vertical Logic
+                    const viewMiddle = window.innerHeight / 2;
+                    
+                    // Check which section is currently at center of screen
+                    for (let section of sections) {
+                        const rect = section.getBoundingClientRect();
+                        // If the center of the screen falls within the section
+                        if (rect.top <= viewMiddle && rect.bottom >= viewMiddle) {
+                            const id = section.getAttribute('id');
+                            updateActiveLink(id);
+                            break; // Stop checking once found
+                        }
+                    }
+                }
+            }
+
+            // 1. Attach Standard Scroll Listeners
+            scroller.addEventListener('scroll', updateNavState);
+            window.addEventListener('scroll', updateNavState);
+            
+            // 2. ADD SAFETY TIMER (The Fix for Android)
+            // This runs 10 times per second to ensure the dot updates even 
+            // if the scroll event is blocked or throttled by the browser.
+            setInterval(updateNavState, 100);
+
+            // Initial Trigger
+            updateNavState();
+
+        });
+    </script>
+</body>
+</html>
