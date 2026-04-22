@@ -230,17 +230,111 @@
         .card-tags .tag-dot { width: 3px; height: 3px; background: var(--text-muted); border-radius: 50%; }
 
         .links-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; max-width: 560px; }
-        .link-card { width: 100%; background: var(--white-glass); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 1rem 1.2rem; margin-bottom: 0.75rem; border-radius: 14px; border: 1px solid var(--border-glass); box-shadow: var(--shadow-soft); display: flex; justify-content: space-between; align-items: center; transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); }
-        .link-card:hover { background: var(--white-glass-hover); border-color: var(--border-glass-hover); transform: translateX(6px); box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+
+        /* ── Link cards: shimmer sweep + breathing border, NO hover transform ── */
+        .link-card {
+            width: 100%;
+            background: var(--white-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.75rem;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            /* no transform transition — nothing moves */
+        }
+
+        /* Diagonal shimmer sweep — runs constantly */
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                105deg,
+                transparent 20%,
+                rgba(0, 255, 255, 0.06) 45%,
+                rgba(0, 255, 255, 0.12) 50%,
+                rgba(0, 255, 255, 0.06) 55%,
+                transparent 80%
+            );
+            animation: linkShimmer 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes linkShimmer {
+            0%   { left: -100%; }
+            40%  { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        /* Stagger the shimmer per card */
+        .link-card:nth-child(2)::before { animation-delay: 1.2s; }
+        .link-card:nth-child(3)::before { animation-delay: 2.4s; }
+
+        /* Breathing border glow */
+        .link-card::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 15px;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(0,255,255,0.15), transparent 40%, transparent 60%, rgba(167,139,250,0.1)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: linkBorderBreathe 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes linkBorderBreathe {
+            0%, 100% { opacity: 0.3; }
+            50%      { opacity: 1; }
+        }
+        .link-card:nth-child(2)::after { animation-delay: 1s; }
+        .link-card:nth-child(3)::after { animation-delay: 2s; }
+
+        /* Keep inner content above the pseudo-elements */
+        .link-card .link-left,
+        .link-card .link-icon { position: relative; z-index: 2; }
+
+        /* Only feedback: brief scale press on actual click/tap */
+        .link-card:active {
+            transform: scale(0.97);
+            transition: transform 0.1s ease;
+        }
+
+        /* Arrow subtly pulses to say "tap me" */
+        .link-card .link-icon {
+            font-size: 1rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+            animation: arrowHint 2.5s ease-in-out infinite;
+        }
+        @keyframes arrowHint {
+            0%, 100% { transform: translateX(0); opacity: 0.5; }
+            50%      { transform: translateX(4px); opacity: 1; color: var(--accent); }
+        }
+        .link-card:nth-child(2) .link-icon { animation-delay: 0.8s; }
+        .link-card:nth-child(3) .link-icon { animation-delay: 1.6s; }
+
         .link-card .link-left { display: flex; align-items: center; gap: 0.8rem; min-width: 0; overflow: hidden; }
-        .link-card .link-logo { width: 34px; height: 34px; min-width: 34px; border-radius: 10px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
-        .link-card:hover .link-logo { background: rgba(255,255,255,0.12); }
+        .link-card .link-logo { width: 34px; height: 34px; min-width: 34px; border-radius: 10px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; }
         .link-card .link-logo svg { width: 16px; height: 16px; flex-shrink: 0; }
         .link-card .link-text-block { text-align: left; min-width: 0; }
         .link-card .link-name { font-weight: 600; font-size: 0.88rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .link-card .link-handle { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .link-icon { font-size: 1rem; color: var(--text-muted); transition: color 0.3s, transform 0.3s; flex-shrink: 0; margin-left: 0.5rem; }
-        .link-card:hover .link-icon { color: #fff; transform: translateX(3px); }
+
         .footer-text { margin-top: 2.5rem; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.05em; }
         .footer-text a { color: var(--accent); transition: opacity 0.3s; }
         .footer-text a:hover { opacity: 0.7; }
@@ -508,15 +602,15 @@
                 <div class="label-tag fade-up d1" style="margin:0 auto 0.8rem auto;"><div class="pulse-dot"></div>Connect</div>
                 <h2 class="fade-up d2">Let's Connect</h2>
                 <p class="fade-up d2" style="margin:0 auto 2rem auto;text-align:center;">Find me across platforms or reach out directly.</p>
-                <a href="https://www.instagram.com/shinyureverie?igsh=Ynl6dzYzNzJ4bnIz&utm_source=qr" target="_blank" rel="noopener" class="link-card fade-up d2 magnetic-btn">
+                <a href="https://www.instagram.com/shinyureverie?igsh=Ynl6dzYzNzJ4bnIz&utm_source=qr" target="_blank" rel="noopener" class="link-card fade-up d2">
                     <div class="link-left"><div class="link-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div><div class="link-text-block"><div class="link-name">Instagram</div><div class="link-handle">@shinyureverie</div></div></div>
                     <span class="link-icon">→</span>
                 </a>
-                <a href="https://www.youtube.com/@shinyureverie/featured" target="_blank" rel="noopener" class="link-card fade-up d3 magnetic-btn">
+                <a href="https://www.youtube.com/@shinyureverie/featured" target="_blank" rel="noopener" class="link-card fade-up d3">
                     <div class="link-left"><div class="link-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="currentColor" stroke="none"/></svg></div><div class="link-text-block"><div class="link-name">YouTube</div><div class="link-handle">@shinyureverie</div></div></div>
                     <span class="link-icon">→</span>
                 </a>
-                <a href="mailto:shinyureverie@gmail.com" class="link-card fade-up d4 magnetic-btn">
+                <a href="mailto:shinyureverie@gmail.com" class="link-card fade-up d4">
                     <div class="link-left"><div class="link-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg></div><div class="link-text-block"><div class="link-name">Email</div><div class="link-handle">shinyureverie@gmail.com</div></div></div>
                     <span class="link-icon">→</span>
                 </a>
@@ -614,10 +708,9 @@
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
             });
 
-            // 3D TILT — desktop only, completely disabled on mobile
+            // 3D TILT — works on both desktop and mobile
             document.querySelectorAll('.tilt-target').forEach(card => {
                 function handleMove(cx, cy) {
-                    if (window.innerWidth <= 900) return;
                     const rect = card.getBoundingClientRect();
                     const x = cx - rect.left, y = cy - rect.top;
                     const rx = ((y - rect.height/2) / (rect.height/2)) * -6;
@@ -625,18 +718,24 @@
                     card.style.transform = 'perspective(800px) rotateX('+rx+'deg) rotateY('+ry+'deg)';
                 }
                 card.addEventListener('mousemove', e => handleMove(e.clientX, e.clientY));
-                const reset = () => { if (window.innerWidth <= 900) return; card.style.transform = 'perspective(800px) rotateX(0) rotateY(0)'; };
+                card.addEventListener('touchmove', e => {
+                    handleMove(e.touches[0].clientX, e.touches[0].clientY);
+                }, {passive: true});
+                const reset = () => { card.style.transform = 'perspective(800px) rotateX(0) rotateY(0)'; };
                 card.addEventListener('mouseleave', reset);
+                card.addEventListener('touchend', reset);
             });
 
-            // Magnetic buttons — desktop only
+            // Magnetic buttons — both devices
             document.querySelectorAll('.magnetic-btn').forEach(btn => {
-                btn.addEventListener('mousemove', e => {
-                    if (window.innerWidth <= 900) return;
+                function magMove(cx, cy) {
                     const r = btn.getBoundingClientRect();
-                    btn.style.transform = 'translate('+(e.clientX-r.left-r.width/2)*0.2+'px,'+(e.clientY-r.top-r.height/2)*0.2+'px)';
-                });
-                btn.addEventListener('mouseleave', () => { if (window.innerWidth <= 900) return; btn.style.transform = ''; });
+                    btn.style.transform = 'translate('+(cx-r.left-r.width/2)*0.2+'px,'+(cy-r.top-r.height/2)*0.2+'px)';
+                }
+                btn.addEventListener('mousemove', e => magMove(e.clientX, e.clientY));
+                btn.addEventListener('touchmove', e => magMove(e.touches[0].clientX, e.touches[0].clientY), {passive: true});
+                btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+                btn.addEventListener('touchend', () => { btn.style.transform = ''; });
             });
 
             const heroTitle = document.getElementById('hero-title');
@@ -742,6 +841,7 @@
             const modal=document.getElementById('choice-modal'), modalTN=document.getElementById('modal-track-name'), modalArt=document.getElementById('modal-art'), modalPB=document.getElementById('modal-play-btn'), modalYB=document.getElementById('modal-yt-btn');
             const playerUI=document.getElementById('audio-player'), playerTitle=document.getElementById('player-title'), playerArt=document.getElementById('player-art'), extLink=document.getElementById('external-link-btn');
 
+            // Block accidental taps right after scrolling on mobile
             let touchScrolled = false;
             document.addEventListener('touchmove', () => { touchScrolled = true; }, {passive: true});
             document.addEventListener('touchend', () => { setTimeout(() => { touchScrolled = false; }, 400); }, {passive: true});
