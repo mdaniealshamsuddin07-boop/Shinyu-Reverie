@@ -118,21 +118,33 @@
             gap: 0.6rem;
             margin-top: 1.5rem;
             padding: 0.9rem 2.2rem;
-            background: rgba(255,255,255,0.03);
-            color: rgba(255,255,255,0.3);
-            font-weight: 500;
+            background: rgba(0,255,255,0.04);
+            color: rgba(0,255,255,0.5);
+            font-weight: 600;
             font-size: 0.9rem;
+            letter-spacing: 0.02em;
             border-radius: 100px;
-            border: 1px solid rgba(0,255,255,0.08);
+            border: 1px solid rgba(0,255,255,0.15);
             cursor: default;
             pointer-events: none;
             user-select: none;
-            box-shadow: 0 0 20px rgba(0,255,255,0.06), inset 0 0 20px rgba(0,255,255,0.03);
-            animation: dullGlow 4s ease-in-out infinite;
+            box-shadow: 0 0 24px rgba(0,255,255,0.08), inset 0 0 24px rgba(0,255,255,0.03);
+            text-shadow: 0 0 12px rgba(0,255,255,0.3);
+            animation: dullGlow 3.5s ease-in-out infinite;
         }
         @keyframes dullGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(0,255,255,0.04), inset 0 0 20px rgba(0,255,255,0.02); border-color: rgba(0,255,255,0.06); }
-            50% { box-shadow: 0 0 30px rgba(0,255,255,0.1), inset 0 0 25px rgba(0,255,255,0.04); border-color: rgba(0,255,255,0.14); }
+            0%, 100% {
+                box-shadow: 0 0 24px rgba(0,255,255,0.06), inset 0 0 24px rgba(0,255,255,0.02);
+                border-color: rgba(0,255,255,0.12);
+                color: rgba(0,255,255,0.45);
+                text-shadow: 0 0 10px rgba(0,255,255,0.2);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0,255,255,0.18), 0 0 80px rgba(0,255,255,0.06), inset 0 0 30px rgba(0,255,255,0.06);
+                border-color: rgba(0,255,255,0.3);
+                color: rgba(0,255,255,0.65);
+                text-shadow: 0 0 18px rgba(0,255,255,0.45);
+            }
         }
 
         .hero-layout { display: grid; grid-template-columns: 1.3fr 1fr; width: 100%; max-width: 1500px; align-items: center; gap: 3.5rem; }
@@ -327,6 +339,8 @@
             .card-title { font-size: 0.92rem; }
             .links-layout { max-width: 100%; }
             .links-layout p { max-width: 100%; text-align: center; }
+            /* FIX: No stagger delay on mobile — all link items appear together */
+            #links .fade-up { transition-delay: 0s !important; }
             .link-card { padding: 0.85rem 1rem; margin-bottom: 0.6rem; border-radius: 12px; }
             .link-card .link-logo { width: 32px; height: 32px; min-width: 32px; border-radius: 8px; }
             .link-card .link-logo svg { width: 14px; height: 14px; }
@@ -601,6 +615,7 @@
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
             });
 
+            // 3D TILT — skip entirely on mobile to avoid scroll interference
             document.querySelectorAll('.tilt-target').forEach(card => {
                 function handleMove(cx, cy) {
                     const rect = card.getBoundingClientRect();
@@ -610,10 +625,9 @@
                     card.style.transform = 'perspective(800px) rotateX('+rx+'deg) rotateY('+ry+'deg)';
                 }
                 card.addEventListener('mousemove', e => handleMove(e.clientX, e.clientY));
-                card.addEventListener('touchmove', e => { e.preventDefault(); handleMove(e.touches[0].clientX, e.touches[0].clientY); }, {passive:false});
                 const reset = () => { card.style.transform = 'perspective(800px) rotateX(0) rotateY(0)'; };
                 card.addEventListener('mouseleave', reset);
-                card.addEventListener('touchend', reset);
+                // No touchmove on mobile — prevents scroll blocking and accidental clicks
             });
 
             document.querySelectorAll('.magnetic-btn').forEach(btn => {
@@ -727,8 +741,15 @@
             const modal=document.getElementById('choice-modal'), modalTN=document.getElementById('modal-track-name'), modalArt=document.getElementById('modal-art'), modalPB=document.getElementById('modal-play-btn'), modalYB=document.getElementById('modal-yt-btn');
             const playerUI=document.getElementById('audio-player'), playerTitle=document.getElementById('player-title'), playerArt=document.getElementById('player-art'), extLink=document.getElementById('external-link-btn');
 
+            // FIX: Block clicks on work cards right after a scroll on mobile
+            let touchScrolled = false;
+            document.addEventListener('touchmove', () => { touchScrolled = true; }, {passive: true});
+            document.addEventListener('touchend', () => { setTimeout(() => { touchScrolled = false; }, 400); }, {passive: true});
+
             document.querySelectorAll('.project-link').forEach(link => {
-                link.addEventListener('click', function() {
+                link.addEventListener('click', function(e) {
+                    // If user just finished scrolling, ignore the tap
+                    if (touchScrolled) return;
                     const url=link.getAttribute('data-url'), title=link.getAttribute('data-title'), img=link.querySelector('img').src;
                     const m=url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|shorts\/)|youtu\.be\/|youtube\.com\/api\/player\?(?:\?|&)vi?=)([^&?\/\n?#]+)/);
                     if (m&&m[1]) { pending={id:m[1],url,title,img}; modalTN.textContent=title; modalArt.src=img; modal.classList.add('active'); }
