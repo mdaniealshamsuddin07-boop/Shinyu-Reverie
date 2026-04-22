@@ -220,10 +220,13 @@
         .video-thumb-wrapper { position: relative; width: 100%; height: 220px; overflow: hidden; }
         .card-img { width: 100%; height: 220px; object-fit: cover; display: block; transition: transform 0.6s; }
         .project-card:hover .card-img { transform: scale(1.08); }
+
+        /* Desktop: play overlay hidden until hover */
         .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s; }
         .project-card:hover .play-overlay { opacity: 1; }
         .play-icon { width: 52px; height: 52px; background: rgba(255,255,255,0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
         .project-card:hover .play-icon { transform: scale(1.15); }
+
         .card-info { padding: 1.3rem 1.5rem; }
         .card-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; color: #fff; }
         .card-tags { font-size: 0.75rem; color: var(--accent); font-weight: 500; display: flex; align-items: center; gap: 0.4rem; }
@@ -231,7 +234,6 @@
 
         .links-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; max-width: 560px; }
 
-        /* ── Link cards: shimmer sweep + breathing border, NO hover transform ── */
         .link-card {
             width: 100%;
             background: var(--white-glass);
@@ -247,10 +249,8 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            /* no transform transition — nothing moves */
         }
 
-        /* Diagonal shimmer sweep — runs constantly */
         .link-card::before {
             content: '';
             position: absolute;
@@ -275,12 +275,9 @@
             40%  { left: 150%; }
             100% { left: 150%; }
         }
-
-        /* Stagger the shimmer per card */
         .link-card:nth-child(2)::before { animation-delay: 1.2s; }
         .link-card:nth-child(3)::before { animation-delay: 2.4s; }
 
-        /* Breathing border glow */
         .link-card::after {
             content: '';
             position: absolute;
@@ -303,17 +300,14 @@
         .link-card:nth-child(2)::after { animation-delay: 1s; }
         .link-card:nth-child(3)::after { animation-delay: 2s; }
 
-        /* Keep inner content above the pseudo-elements */
         .link-card .link-left,
         .link-card .link-icon { position: relative; z-index: 2; }
 
-        /* Only feedback: brief scale press on actual click/tap */
         .link-card:active {
             transform: scale(0.97);
             transition: transform 0.1s ease;
         }
 
-        /* Arrow subtly pulses to say "tap me" */
         .link-card .link-icon {
             font-size: 1rem;
             color: var(--text-muted);
@@ -431,6 +425,17 @@
             .card-img { height: 180px; }
             .card-info { padding: 1rem 1.2rem; }
             .card-title { font-size: 0.92rem; }
+
+            /* Mobile: play button always visible so users know cards are tappable */
+            .play-overlay {
+                opacity: 1;
+                background: rgba(0,0,0,0.35);
+            }
+            .play-icon {
+                width: 46px;
+                height: 46px;
+            }
+
             .links-layout { max-width: 100%; }
             .links-layout p { max-width: 100%; text-align: center; }
             #links .fade-up { transition-delay: 0s !important; }
@@ -615,7 +620,7 @@
                     <span class="link-icon">→</span>
                 </a>
                 <button type="button" class="btn-dull fade-up d4">Get In Touch</button>
-                <div class="footer-text fade-up d4">© 2025 Shinyu Reverie. Crafted with <a href="#">passion</a>.</div>
+                <div class="footer-text fade-up d4">© 2026 Shinyu Reverie. Crafted with <a href="#">passion</a>.</div>
             </div>
         </section>
 
