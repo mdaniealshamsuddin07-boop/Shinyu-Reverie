@@ -4,13 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shinyu Reverie | Instrumental Music Composer & Soundtracks</title>
-    
-    <!-- THIS IS THE FIX I ADDED FOR YOU -->
+
     <link rel="canonical" href="https://shinyureverieofficialwebsite.netlify.app/">
-    
+
     <meta name="description" content="Official website of Shinyu Reverie. Creating original instrumental music, ambient soundscapes, and cinematic soundtracks.">
     <meta name="keywords" content="instrumental music, ambient, cinematic soundtrack, composer, Shinyu Reverie">
     <meta name="google-site-verification" content="Of36creN0WizhDk5ItlwCk8_cwZo4EhjZZbMJN6_gYk" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+    <!-- Open Graph -->
+    <meta property="og:url" content="https://shinyureverieofficialwebsite.netlify.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Shinyu Reverie | Instrumental Music Composer & Soundtracks">
+    <meta property="og:description" content="Creating original instrumental music, ambient soundscapes, and cinematic soundtracks.">
+    <meta property="og:image" content="https://i.postimg.cc/FKMgQfZ2/IMG-1808.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Shinyu Reverie">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shinyu Reverie | Instrumental Music Composer & Soundtracks">
+    <meta name="twitter:description" content="Creating original instrumental music, ambient soundscapes, and cinematic soundtracks.">
+    <meta name="twitter:image" content="https://i.postimg.cc/FKMgQfZ2/IMG-1808.jpg">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Shinyu Reverie",
+        "url": "https://shinyureverieofficialwebsite.netlify.app/",
+        "description": "Creating original instrumental music, ambient soundscapes, and cinematic soundtracks.",
+        "image": "https://i.postimg.cc/FKMgQfZ2/IMG-1808.jpg",
+        "sameAs": [
+            "https://www.instagram.com/shinyureverie",
+            "https://www.youtube.com/@shinyureverie"
+        ],
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://shinyureverieofficialwebsite.netlify.app/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Shinyu Reverie",
+        "url": "https://shinyureverieofficialwebsite.netlify.app/",
+        "image": "https://i.postimg.cc/FKMgQfZ2/IMG-1808.jpg",
+        "jobTitle": "Instrumental Music Composer",
+        "description": "Instrumental music composer dedicated to crafting original ambient and cinematic soundtracks.",
+        "sameAs": [
+            "https://www.instagram.com/shinyureverie",
+            "https://www.youtube.com/@shinyureverie"
+        ]
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -225,7 +279,6 @@
         .card-img { width: 100%; height: 220px; object-fit: cover; display: block; transition: transform 0.6s; }
         .project-card:hover .card-img { transform: scale(1.08); }
 
-        /* Desktop: play overlay hidden until hover */
         .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s; }
         .project-card:hover .play-overlay { opacity: 1; }
         .play-icon { width: 52px; height: 52px; background: rgba(255,255,255,0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
@@ -429,17 +482,8 @@
             .card-img { height: 180px; }
             .card-info { padding: 1rem 1.2rem; }
             .card-title { font-size: 0.92rem; }
-
-            /* Mobile: play button always visible so users know cards are tappable */
-            .play-overlay {
-                opacity: 1;
-                background: rgba(0,0,0,0.35);
-            }
-            .play-icon {
-                width: 46px;
-                height: 46px;
-            }
-
+            .play-overlay { opacity: 1; background: rgba(0,0,0,0.35); }
+            .play-icon { width: 46px; height: 46px; }
             .links-layout { max-width: 100%; }
             .links-layout p { max-width: 100%; text-align: center; }
             #links .fade-up { transition-delay: 0s !important; }
@@ -624,7 +668,7 @@
                     <span class="link-icon">→</span>
                 </a>
                 <button type="button" class="btn-dull fade-up d4">Get In Touch</button>
-                <div class="footer-text fade-up d4">© 2026 Shinyu Reverie. Crafted with <a href="#">passion</a>.</div>
+                <div class="footer-text fade-up d4">© 2025 Shinyu Reverie. Crafted with <a href="#">passion</a>.</div>
             </div>
         </section>
 
@@ -717,7 +761,6 @@
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
             });
 
-            // 3D TILT — works on both desktop and mobile
             document.querySelectorAll('.tilt-target').forEach(card => {
                 function handleMove(cx, cy) {
                     const rect = card.getBoundingClientRect();
@@ -727,15 +770,12 @@
                     card.style.transform = 'perspective(800px) rotateX('+rx+'deg) rotateY('+ry+'deg)';
                 }
                 card.addEventListener('mousemove', e => handleMove(e.clientX, e.clientY));
-                card.addEventListener('touchmove', e => {
-                    handleMove(e.touches[0].clientX, e.touches[0].clientY);
-                }, {passive: true});
+                card.addEventListener('touchmove', e => { handleMove(e.touches[0].clientX, e.touches[0].clientY); }, {passive: true});
                 const reset = () => { card.style.transform = 'perspective(800px) rotateX(0) rotateY(0)'; };
                 card.addEventListener('mouseleave', reset);
                 card.addEventListener('touchend', reset);
             });
 
-            // Magnetic buttons — both devices
             document.querySelectorAll('.magnetic-btn').forEach(btn => {
                 function magMove(cx, cy) {
                     const r = btn.getBoundingClientRect();
@@ -850,7 +890,6 @@
             const modal=document.getElementById('choice-modal'), modalTN=document.getElementById('modal-track-name'), modalArt=document.getElementById('modal-art'), modalPB=document.getElementById('modal-play-btn'), modalYB=document.getElementById('modal-yt-btn');
             const playerUI=document.getElementById('audio-player'), playerTitle=document.getElementById('player-title'), playerArt=document.getElementById('player-art'), extLink=document.getElementById('external-link-btn');
 
-            // Block accidental taps right after scrolling on mobile
             let touchScrolled = false;
             document.addEventListener('touchmove', () => { touchScrolled = true; }, {passive: true});
             document.addEventListener('touchend', () => { setTimeout(() => { touchScrolled = false; }, 400); }, {passive: true});
