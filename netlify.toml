@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "https://www.shinyureverieofficialwebsite.netlify.app/*"
+  to = "https://shinyureverieofficialwebsite.netlify.app/:splat"
+  status = 301
+  force = true
